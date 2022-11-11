@@ -11,6 +11,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>board_content</title>
+<style type="text/css">
+	#contentimg{
+		max-width:300px;
+	}
+</style>
 <link rel="Stylesheet"
 	href="${pageContext.request.contextPath}/style/default.css" />
 </head>
@@ -51,7 +56,11 @@
 					</tr>
 					<tr height="100">
 						<td width="20%" align="center"><b>글내용</b></td>
-						<td colspan="3">${fn:replace(board.content, newLineChar,"<br>")}</td>
+						<td colspan="3">
+						<c:if test="${board.filesystemname != null }">
+							<img id="contentimg" alt="image not loading" src="upload/${board.filesystemname }"><br>
+						</c:if>
+						${fn:replace(board.content, newLineChar,"<br>")}</td>
 					</tr>
 					<tr>
 						<td colspan="4" align="center"><a
@@ -164,11 +173,11 @@
 				<!-- 꼬리글 목록 테이블 -->
 				<div id="replytablearea">
 				<c:if test="${not empty replyList}">
-					<c:forEach var="reply" items="${replyList}">
 						<table width="80%" border="1">
 							<tr>
 								<th colspan="2">REPLY LIST</th>
 							</tr>
+					<c:forEach var="reply" items="${replyList}">
 							<tr align="left">
 								<td width="80%">
 								[${reply.writer}] : ${reply.content}
@@ -183,8 +192,8 @@
 								</form>
 								</td>
 							</tr>
-						</table>
 					</c:forEach>
+						</table>
 				</c:if>
 			</div>
 			</center>

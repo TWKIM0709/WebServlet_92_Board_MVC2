@@ -11,7 +11,6 @@ import kr.or.bit.action.Action;
 import kr.or.bit.action.ActionForward;
 import kr.or.bit.dao.BoardDao;
 import kr.or.bit.dto.Board;
-import kr.or.bit.utils.FileUpload;
 
 public class BoardAddService implements Action {
 
@@ -49,8 +48,8 @@ public class BoardAddService implements Action {
 		String homepage = multi.getParameter("homepage");
 		String content = multi.getParameter("content");
 		String pwd = multi.getParameter("pwd");
-		String filename = multi.getParameter("filename");
-		
+		String filename = multi.getOriginalFileName("filename");
+		String filesystemname = multi.getFilesystemName("filename");
 		int result = 0;
 
 		
@@ -61,6 +60,7 @@ public class BoardAddService implements Action {
 		board.setContent(content);
 		board.setPwd(pwd);
 		board.setFilename(filename);
+		board.setFilesystemname(filesystemname);
 		
 		try {
 			BoardDao dao = new BoardDao();

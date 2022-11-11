@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="WebServlet_92_Board_Test">
+        
+    <wb-module deploy-name="WebServlet_92_Board_File">
+                
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <property name="context-root" value="WebServlet_92_Board_Test"/>
-        <property name="java-output-path" value="/WebServlet_92_Board_Test/build/classes"/>
+                
+        <property name="java-output-path" value="/WebServlet_92_Board_File/build/classes"/>
+        <property name="context-root" value="WebServlet_92_Board_File"/>
+            
     </wb-module>
+    
 </project-modules>

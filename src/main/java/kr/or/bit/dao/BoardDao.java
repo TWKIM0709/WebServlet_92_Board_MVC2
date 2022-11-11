@@ -32,8 +32,8 @@ public class BoardDao {
 		int row = 0;
 		try {
 			conn = ds.getConnection();
-			String sql="insert into jspboard(idx, writer, pwd, subject, content, email, homepage, writedate, readnum,filename,filesize,refer)"+ 
-					   " values(jspboard_idx.nextval,?,?,?,?,?,?,sysdate,0,?,0,?)";
+			String sql="insert into jspboard(idx, writer, pwd, subject, content, email, homepage, writedate, readnum,filename,filesize,refer,filesystemname)"+ 
+					   " values(jspboard_idx.nextval,?,?,?,?,?,?,sysdate,0,?,0,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, boarddata.getWriter());
@@ -43,7 +43,7 @@ public class BoardDao {
 			pstmt.setString(5, boarddata.getEmail());
 			pstmt.setString(6, boarddata.getHomepage());
 			pstmt.setString(7, boarddata.getFilename());
-			
+			pstmt.setString(9,boarddata.getFilesystemname());
 			//계층형 게시판
 			//refer(참조값) , step , depth
 			//1. 원본글 : refer 생성?  , step(0) default , depth(0) default
@@ -256,7 +256,7 @@ public class BoardDao {
 				String subject = rs.getString("subject");
 				String content = rs.getString("content");
 				String filename = rs.getString("filename");
-				
+				String filesystemname = rs.getString("filesystemname");
 				java.sql.Date writedate = rs.getDate("writedate");
 				int readnum = rs.getInt("readnum");
 				int filesize = rs.getInt("filesize");
@@ -266,7 +266,7 @@ public class BoardDao {
 				int step = rs.getInt("step");
 				int depth = rs.getInt("depth");
 				
-				board = new Board(idx, writer, pwd, subject, content, writedate, readnum, filename, filesize, homepage, email, refer, depth, step);
+				board = new Board(idx, writer, pwd, subject, content, writedate, readnum, filename, filesize, homepage, email, refer, depth, step,filesystemname);
 			}
 			
 		} catch (Exception e) {
@@ -631,15 +631,18 @@ public class BoardDao {
 	
 	//게시글 수정하기 처리
 	//public int boardEdit(Board boarddata){}
-	public int boardEdit(HttpServletRequest boarddata) {
-		String idx= boarddata.getParameter("idx");
-		String pwd= boarddata.getParameter("pwd");
-		String writer= boarddata.getParameter("writer");
-		String email= boarddata.getParameter("email");
-		String homepage= boarddata.getParameter("homepage");
-		String subject= boarddata.getParameter("subject");
-		String content= boarddata.getParameter("content");
-		String filename= boarddata.getParameter("filename");
+	public int boardEdit(Board board) {
+		
+		
+		String idx= board.getIdx() + "";
+		String pwd= board.getPwd();
+		String writer= board.getWriter();
+		String email= board.getEmail();
+		String homepage= board.getHomepage();
+		String subject= board.getSubject();
+		String content= board.getContent();
+		String filename= board.getFilename();
+		String filesystemname = board.getFilesystemname();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -650,7 +653,7 @@ public class BoardDao {
 			conn = ds.getConnection();
 			String sql_idx = "select idx  from jspboard where idx=? and pwd=?";
 			String sql_udpate = "update jspboard set writer=? , email=? , homepage=? ,"+
-			                    " subject=? , content=? , filename=? where idx=?";
+			                    " subject=? , content=? , filename=? , filesystemname = ? where idx=?";
 			pstmt = conn.prepareStatement(sql_idx);
 			pstmt.setString(1, idx);
 			pstmt.setString(2, pwd);
@@ -668,7 +671,8 @@ public class BoardDao {
 				pstmt.setString(4, subject);
 				pstmt.setString(5, content);
 				pstmt.setString(6, filename);
-				pstmt.setString(7, idx);
+				pstmt.setString(7,filesystemname);
+				pstmt.setString(8, idx);
 				row = pstmt.executeUpdate();
 				//System.out.println("row : " + row);
 			}

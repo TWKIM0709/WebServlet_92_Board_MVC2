@@ -15,8 +15,17 @@ public class Board {  //SELECT * FROM jspboard
 	private int filesize;
 	private String homepage;
 	private String email;
+	private String filesystemname;
 	//부가 입력 사항
 	
+	public String getFilesystemname() {
+		return filesystemname;
+	}
+
+	public void setFilesystemname(String filesystemname) {
+		this.filesystemname = filesystemname;
+	}
+
 	//계층형 (답글)
 	private int refer;//글의 묶음
 	private int depth;//글의 들여쓰기
@@ -43,6 +52,26 @@ public class Board {  //SELECT * FROM jspboard
 		this.step = step;
 	}
 
+	public Board(int idx, String writer, String pwd, String subject, String content, Date writedate, int readnum,
+			String filename, int filesize, String homepage, String email, int refer, int depth, int step,String filesystemname) {
+		super();
+		this.idx = idx;
+		this.writer = writer;
+		this.pwd = pwd;
+		this.subject = subject;
+		this.content = content;
+		this.writedate = writedate;
+		this.readnum = readnum;
+		this.filename = filename;
+		this.filesize = filesize;
+		this.homepage = homepage;
+		this.email = email;
+		this.refer = refer;
+		this.depth = depth;
+		this.step = step;
+		this.filesystemname = filesystemname;
+	}
+	
 	public int getIdx() {
 		return idx;
 	}

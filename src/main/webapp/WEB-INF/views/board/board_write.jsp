@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,33 +9,45 @@
 	<title>게시판 글쓰기</title>
 	<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 	<link rel="Stylesheet" href="${pageContext.request.contextPath}/style/default.css" />
+    <style type="text/css">
+        .hidediv{
+              display:none; 
+        }
+        /* 테스트  */
+        #preview{
+        	position:absolute;
+        	top:70%;
+        	bottom:125%;
+        	left:30%;
+        }
+    </style>
 	<SCRIPT type="text/javascript">
-function check(){
-    if(!bbs.subject.value){
-        alert("제목을 입력하세요");
-        bbs.subject.focus();
-        return false;
+    function check(){
+        if(!bbs.subject.value){
+            alert("제목을 입력하세요");
+            bbs.subject.focus();
+            return false;
+        }
+        if(!bbs.writer.value){
+            
+            alert("이름을 입력하세요");
+            bbs.writer.focus();
+            return false;
+        }
+    /*  if(!bbs.content.value){            
+            alert("글 내용을 입력하세요");
+            bbs.content.focus();
+            return false;
+        } */
+        if(!bbs.pwd.value){            
+            alert("비밀번호를 입력하세요");
+            bbs.pwd.focus();
+            return false;
+        }
+    
+        document.bbs.submit();
+    
     }
-    if(!bbs.writer.value){
-        
-        alert("이름을 입력하세요");
-        bbs.writer.focus();
-        return false;
-    }
-   /*  if(!bbs.content.value){            
-        alert("글 내용을 입력하세요");
-        bbs.content.focus();
-        return false;
-    } */
-    if(!bbs.pwd.value){            
-        alert("비밀번호를 입력하세요");
-        bbs.pwd.focus();
-        return false;
-    }
- 
-    document.bbs.submit();
- 
-}
 </SCRIPT>
 </head>
 <body>
@@ -71,7 +84,12 @@ function check(){
                     </tr>
                     <tr>
                         <td width="20%" align="center">첨부파일</td>
-                        <td width="80%" align="left"><input type="file" name="filename"></td>
+                        <td width="80%" align="left" >
+	                        <div id="filearea">
+		                        <img class="hidediv" id="preview" src="" width="300">
+		                        <input type="file" name="filename" id="getfile">
+	                        </div>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
@@ -85,4 +103,38 @@ function check(){
         </div>
     </div>
 </body>
+<script type="text/javascript">
+	var file = document.querySelector('#getfile');
+	$('#filearea').on({
+        'mouseover':() => {
+            var fileList = file.files ;
+            // 읽기
+            var reader = new FileReader();
+            if(fileList[0] != null){
+            	$("#preview").removeClass("hidediv");
+            }
+        },
+        'mouseout':() =>{
+        	var fileList = file.files ;
+            // 읽기
+            var reader = new FileReader();
+            if(fileList[0] != null){
+            	$("#preview").addClass("hidediv");
+            }
+        }
+    });
+    
+    file.onchange = function () { 
+        var fileList = file.files ;
+        
+        // 읽기
+        var reader = new FileReader();
+        reader.readAsDataURL(fileList [0]);
+
+        //로드 한 후
+        reader.onload = function  () {
+            document.querySelector('#preview').src = reader.result ;
+        }; 
+    }; 
+</script>
 </html>

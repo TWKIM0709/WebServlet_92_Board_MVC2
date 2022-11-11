@@ -59,7 +59,7 @@
 	<div id="pageContainer">
 		<div style="padding-top: 25px; text-align: center">
 			<!-- form 시작 -->
-			<form name="edit" action="BoardEditOk.do" method="POST">
+			<form name="edit" action="BoardEditOk.do" method="POST" enctype="multipart/form-data">
 				<center>
 					<table width="90%" border="1">
 						<tr>
