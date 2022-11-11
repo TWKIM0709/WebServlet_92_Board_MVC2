@@ -8,6 +8,7 @@ import kr.or.bit.action.Action;
 import kr.or.bit.action.ActionForward;
 import kr.or.bit.dao.BoardDao;
 import kr.or.bit.dto.Board;
+import kr.or.bit.utils.FileUpload;
 
 public class BoardAddService implements Action {
 
@@ -43,15 +44,17 @@ public class BoardAddService implements Action {
 			e.printStackTrace();
 		}
 		
-
-		// write.jsp 화면 >> writeok.jsp 처리 >> service >> dao > DB 작업 >
-		// return dao > return service > writeok.jsp 결과처리 >> 이동 (공통) >> redirect.jsp
-
 		String msg = "";
 		String url = "";
 		if (result > 0) {
 			msg = "insert success";
 			url = "BoardList.do";
+			//파일업로드?
+			if(FileUpload.upload("upload", 1024*1024*10, request)) {
+				System.out.println("서버에 파일 업로드 성공");
+			} else {
+				System.out.println("서버에 파일 업로드 실패");
+			}
 		} else {
 			msg = "insert fail";
 			url = "BoardWrite.do";

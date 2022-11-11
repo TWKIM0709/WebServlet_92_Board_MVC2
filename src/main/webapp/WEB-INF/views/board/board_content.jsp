@@ -162,9 +162,9 @@
 				</script>
 				<br>
 				<!-- 꼬리글 목록 테이블 -->
+				<div id="replytablearea">
 				<c:if test="${not empty replyList}">
 					<c:forEach var="reply" items="${replyList}">
-						<div id="replytablearea">
 						<table width="80%" border="1">
 							<tr>
 								<th colspan="2">REPLY LIST</th>
@@ -184,9 +184,9 @@
 								</td>
 							</tr>
 						</table>
-						</div>
 					</c:forEach>
 				</c:if>
+			</div>
 			</center>
 		</div>
 	</div>

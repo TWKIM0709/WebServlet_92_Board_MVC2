@@ -12,6 +12,7 @@ import kr.or.bit.action.ActionForward;
 import kr.or.bit.dao.BoardDao;
 import kr.or.bit.dto.Board;
 import kr.or.bit.dto.Reply;
+import kr.or.bit.utils.FileUpload;
 
 public class BoardContentService implements Action {
 
@@ -56,8 +57,6 @@ public class BoardContentService implements Action {
 				board = dao.getContent(Integer.parseInt(idx));
 				replyList = dao.replylist(idx);
 			}
-			
-			
 			
 			
 			request.setAttribute("board", board);
