@@ -4,6 +4,9 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import kr.or.bit.action.Action;
 import kr.or.bit.action.ActionForward;
 import kr.or.bit.dao.BoardDao;
@@ -15,17 +18,41 @@ public class BoardAddService implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) {
 		
-		String subject = request.getParameter("subject");
-		String writer = request.getParameter("writer");
-		String email = request.getParameter("email");
-		String homepage = request.getParameter("homepage");
-		String content = request.getParameter("content");
-		String pwd = request.getParameter("pwd");
-		String filename = request.getParameter("filename");
+		MultipartRequest multi = null;
+		String msg = "";
+		String url = "";
+		Board board = new Board();
+		
+		try {
+			multi =  new MultipartRequest(
+					request, //클라이언가 서버로 요청하면 자동 생성되는 객체(정보)	
+					request.getSession().getServletContext().getRealPath("upload"), //실 저장할 경로(배포경로)	
+					1024 * 1024 * 10, //10M
+					"UTF-8",
+					new DefaultFileRenamePolicy() // 파일 이름 중복되면 (upload > 1.jpg > 1.jpg업로드 > 1_1.jpg)
+				);
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "File Upload Error";
+			url = "BoardWrite.do";
+			request.setAttribute("board_msg", msg);
+			request.setAttribute("board_url", url);
+
+			ActionForward forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/WEB-INF/views/board/redirect.jsp");
+		}
+		
+		String subject = multi.getParameter("subject");
+		String writer = multi.getParameter("writer");
+		String email = multi.getParameter("email");
+		String homepage = multi.getParameter("homepage");
+		String content = multi.getParameter("content");
+		String pwd = multi.getParameter("pwd");
+		String filename = multi.getParameter("filename");
 		
 		int result = 0;
 
-		Board board = new Board();
 		
 		board.setSubject(subject);
 		board.setWriter(writer);
@@ -44,17 +71,9 @@ public class BoardAddService implements Action {
 			e.printStackTrace();
 		}
 		
-		String msg = "";
-		String url = "";
 		if (result > 0) {
 			msg = "insert success";
 			url = "BoardList.do";
-			//파일업로드?
-			if(FileUpload.upload("upload", 1024*1024*10, request)) {
-				System.out.println("서버에 파일 업로드 성공");
-			} else {
-				System.out.println("서버에 파일 업로드 실패");
-			}
 		} else {
 			msg = "insert fail";
 			url = "BoardWrite.do";

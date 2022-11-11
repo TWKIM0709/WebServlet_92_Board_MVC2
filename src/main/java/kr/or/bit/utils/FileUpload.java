@@ -13,7 +13,7 @@ public class FileUpload {
 		System.out.println("file upload start");
 		boolean result = true;
 		try {
-			MultipartRequest multi = new MultipartRequest(
+			MultipartRequest multi =  new MultipartRequest(
 					request, //클라이언가 서버로 요청하면 자동 생성되는 객체(정보)	
 					request.getSession().getServletContext().getRealPath(uploadpath), //실 저장할 경로(배포경로)	
 					size, //10M
