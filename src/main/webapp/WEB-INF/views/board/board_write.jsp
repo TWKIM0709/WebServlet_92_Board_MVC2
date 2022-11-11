@@ -60,7 +60,7 @@
                 <table width="95%" border="2" align="center">
                     <tr>
                         <td width="20%" align="center">제목</td>
-                        <td width="80%" align="left"><input type="text"    name="subject" size="40"></td>
+                        <td width="80%" align="left"><input type="text"    name="subject" size="40">공지사항 <input type = "checkbox" name="notice" value = "Y"></td>
                     </tr>
                     <tr>
                         <td width="20%" align="center">글쓴이</td>

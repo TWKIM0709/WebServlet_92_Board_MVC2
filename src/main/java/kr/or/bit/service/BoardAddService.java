@@ -42,25 +42,18 @@ public class BoardAddService implements Action {
 			forward.setPath("/WEB-INF/views/board/redirect.jsp");
 		}
 		
-		String subject = multi.getParameter("subject");
-		String writer = multi.getParameter("writer");
-		String email = multi.getParameter("email");
-		String homepage = multi.getParameter("homepage");
-		String content = multi.getParameter("content");
-		String pwd = multi.getParameter("pwd");
-		String filename = multi.getOriginalFileName("filename");
-		String filesystemname = multi.getFilesystemName("filename");
 		int result = 0;
 
 		
-		board.setSubject(subject);
-		board.setWriter(writer);
-		board.setEmail(email);
-		board.setHomepage(homepage);
-		board.setContent(content);
-		board.setPwd(pwd);
-		board.setFilename(filename);
-		board.setFilesystemname(filesystemname);
+		board.setSubject(multi.getParameter("subject"));
+		board.setWriter(multi.getParameter("writer"));
+		board.setEmail(multi.getParameter("email"));
+		board.setHomepage( multi.getParameter("homepage"));
+		board.setContent(multi.getParameter("content"));
+		board.setPwd(multi.getParameter("pwd"));
+		board.setFilename(multi.getOriginalFileName("filename"));
+		board.setFilesystemname(multi.getFilesystemName("filename"));
+		board.setBoard_noti(multi.getParameter("notice"));
 		
 		try {
 			BoardDao dao = new BoardDao();

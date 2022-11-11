@@ -60,8 +60,28 @@
 						<c:if test="${board.filesystemname != null }">
 							<img id="contentimg" alt="image not loading" src="upload/${board.filesystemname }"><br>
 						</c:if>
-						${fn:replace(board.content, newLineChar,"<br>")}</td>
+							${fn:replace(board.content, newLineChar,"<br>")}
+						</td>
 					</tr>
+						<!-- 다운로드? -->
+						<c:set var="originalfilename" value="${board.filename}" />
+						<c:set var="lowerfilename" value="${fn:toLowerCase(originalfilename)}" />
+						${lowerfilename }<br>
+						<c:forTokens var="file" items="${lowerfilename}" delims="." varStatus="status">
+						<c:if test="${status.last}">
+						<c:choose>
+						<c:when test="${empty board.filename || board.filename eq 'null' || board.filename eq ''}">
+							<tr><td colspan="4">첨부파일이 없습니다</td></tr>
+						</c:when>
+						<c:when test="${file eq 'jpg' || file eq 'png' || file eq 'gif'}">
+							<tr><td colspan="4"><a href="filedownload.board?file_name=${originalfilename}" id="download">${ board.filename} 다운로드</a></td></tr>
+						</c:when>
+						<c:otherwise>
+							<tr><td colspan="4"><a href="filedownload.board?file_name=${originalfilename}" id="download">${originalfilename}</a></td></tr>
+						</c:otherwise>
+						</c:choose>
+						</c:if>
+						</c:forTokens>
 					<tr>
 						<td colspan="4" align="center"><a
 							href="BoardList.do?cp=${cpage}&ps=${pagesize}">목록가기</a> |<a

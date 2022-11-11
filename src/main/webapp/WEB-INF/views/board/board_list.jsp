@@ -75,6 +75,7 @@
 							<c:if test="${board.depth > 0}">
 								<img src="${pageContext.request.contextPath}/images/re.gif">
 							</c:if>
+							<c:if test="${board.board_noti == 'Y'}">	[#공지#]</c:if>
 							<a href="BoardContent.do?idx=${board.idx}&cp=${cpage}&ps=${pagesize}">
 								<c:choose>
 									<c:when test="${board.subject != null && fn:length(board.subject) > 10}">

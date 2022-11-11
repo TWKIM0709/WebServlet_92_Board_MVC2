@@ -16,10 +16,19 @@ public class Board {  //SELECT * FROM jspboard
 	private String homepage;
 	private String email;
 	private String filesystemname;
+	private String board_noti;
 	//부가 입력 사항
 	
 	public String getFilesystemname() {
 		return filesystemname;
+	}
+
+	public String getBoard_noti() {
+		return board_noti;
+	}
+
+	public void setBoard_noti(String board_noti) {
+		this.board_noti = board_noti;
 	}
 
 	public void setFilesystemname(String filesystemname) {

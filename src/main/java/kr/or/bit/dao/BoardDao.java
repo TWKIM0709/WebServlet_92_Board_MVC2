@@ -32,8 +32,8 @@ public class BoardDao {
 		int row = 0;
 		try {
 			conn = ds.getConnection();
-			String sql="insert into jspboard(idx, writer, pwd, subject, content, email, homepage, writedate, readnum,filename,filesize,refer,filesystemname)"+ 
-					   " values(jspboard_idx.nextval,?,?,?,?,?,?,sysdate,0,?,0,?,?)";
+			String sql="insert into jspboard(idx, writer, pwd, subject, content, email, homepage, writedate, readnum,filename,filesize,refer,filesystemname,noti)"+ 
+					   " values(jspboard_idx.nextval,?,?,?,?,?,?,sysdate,0,?,0,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, boarddata.getWriter());
@@ -44,6 +44,7 @@ public class BoardDao {
 			pstmt.setString(6, boarddata.getHomepage());
 			pstmt.setString(7, boarddata.getFilename());
 			pstmt.setString(9,boarddata.getFilesystemname());
+			pstmt.setString(10, boarddata.getBoard_noti());
 			//계층형 게시판
 			//refer(참조값) , step , depth
 			//1. 원본글 : refer 생성?  , step(0) default , depth(0) default
@@ -161,8 +162,8 @@ public class BoardDao {
 			conn = ds.getConnection();
 			String sql = "select * from " +
 			                           "(select rownum rn,idx,writer,email,homepage,pwd,subject , content, writedate, readnum " +
-				                       ",filename,filesize,refer,depth,step " +
-			                           " from ( SELECT * FROM jspboard ORDER BY refer DESC , step ASC ) "+
+				                       ",filename,filesize,refer,depth,step,noti" +
+			                           " from ( SELECT * FROM jspboard ORDER BY noti asc, refer DESC , step ASC ) "+
 				                       " where rownum <= ?" +  //endrow
 				         ") where rn >= ?"; //startrow
 			pstmt = conn.prepareStatement(sql);
@@ -187,7 +188,7 @@ public class BoardDao {
 				board.setRefer(rs.getInt("refer"));
 				board.setStep(rs.getInt("step"));
 				board.setDepth(rs.getInt("depth"));
-				
+				board.setBoard_noti(rs.getString("noti"));
 				list.add(board);
 			}
 			
@@ -566,8 +567,8 @@ public class BoardDao {
 			// "update jspboard set step= step+1 where step  > 0 and refer =1 ";
 			
 			//답글  insert 
-			String rewrite_sql="insert into jspboard(idx,writer,pwd,subject,content,email,homepage,writedate,readnum,filename,filesize,refer,depth,step)" + 
-				    		   " values(jspboard_idx.nextval,?,?,?,?,?,?,sysdate,0,?,0,?,?,?)";
+			String rewrite_sql="insert into jspboard(idx,writer,pwd,subject,content,email,homepage,writedate,readnum,filename,filesize,refer,depth,step,noti)" + 
+				    		   " values(jspboard_idx.nextval,?,?,?,?,?,?,sysdate,0,?,0,?,?,?,?)";
 			
 			pstmt = conn.prepareStatement(refer_depth_step_sal);
 			pstmt.setInt(1, idx);
@@ -598,6 +599,7 @@ public class BoardDao {
 				pstmt.setInt(8, refer);
 				pstmt.setInt(9, depth+1); // 규칙 현재 읽은 글에 depth + 1
 				pstmt.setInt(10, step+1); // 순서 update 통해서  자리 확보 + 1
+				pstmt.setString(11, boardata.getBoard_noti());
 				
 				int row = pstmt.executeUpdate();
 				if(row > 0) {
